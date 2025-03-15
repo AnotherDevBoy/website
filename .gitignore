@@ -1,15 +1,58 @@
-# Godot 4+ specific ignores
-.godot/
-
 # Godot-specific ignores
-.import/
 export.cfg
 export_credentials.cfg
 
 # Imported translations (automatically generated from CSV files)
 *.translation
-
-# Mono-specific ignores
+# Godot-specific directories
+.export/
+.import/
 .mono/
-data_*/
-mono_crash.*.json
+
+# Godot project-specific files
+*.godot-swap
+*.godot-temp
+*.godot-backup
+
+# Godot cache and temporary files
+.cache/
+.config/
+.user/
+.editor_config/
+.editor_layout.cfg
+.godot/
+
+# Exported builds (including Web builds)
+builds/
+exports/
+bin/
+dist/
+
+# Web export-related files
+*.wasm
+*.pck
+*.zip
+*.js
+*.html
+
+# Mono/C# specific files (if using C#)
+mono/
+.mono/
+*.csproj
+*.sln
+*.mono/
+.mono-config
+.mono-debug/
+*.dll
+*.pdb
+*.mdb
+
+# System-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Godot editor log files
+log.txt
+
+/android/
