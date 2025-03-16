@@ -34,6 +34,9 @@ jobs:
       - name: Verify Godot Installation
         run: godot --version
 
+      - name: Verify Export Templates
+        run: ls -lah ~/.local/share/godot/export_templates/4.4.stable/
+
       # ✅ Open the project to ensure assets are imported
       - name: Preload Assets (Ensure All Resources Are Imported)
         run: godot --headless --editor --quit
