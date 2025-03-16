@@ -13,6 +13,7 @@ var last_direction = Vector2.DOWN
 func _ready():
 	target_position = position
 	animation_player.play("idle_down")
+	
 
 func _physics_process(delta: float) -> void:
 	if is_moving:

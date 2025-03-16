@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://cp7ftgaeipd5c"]
+[gd_scene load_steps=11 format=3 uid="uid://cp7ftgaeipd5c"]
 
+[ext_resource type="Script" uid="uid://towgx2tums7w" path="res://scripts/npc.gd" id="1_abqhh"]
 [ext_resource type="Texture2D" uid="uid://bgrj61jlt7awl" path="res://assets/sprites/NPC.png" id="1_nh2m4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tcuxl"]
@@ -58,6 +59,7 @@ animations = [{
 [node name="Npc" type="StaticBody2D"]
 collision_layer = 16
 collision_mask = 16
+script = ExtResource("1_abqhh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 14)
@@ -66,4 +68,4 @@ shape = SubResource("RectangleShape2D_tcuxl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_nh2m4")
 animation = &"idle_down"
-frame_progress = 0.771813
+frame_progress = 0.29447
