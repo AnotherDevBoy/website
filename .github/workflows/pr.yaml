@@ -1,6 +1,9 @@
-name: PR Checks (Lint & Test)
+name: CI/CD for Godot Game
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -29,19 +32,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Godot
-        uses: firebelley/godot-export@v6.0.0
-        with:
-          godot_executable_download_url: "https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_linux.x86_64.zip"
-          godot_export_templates_download_url: "https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_export_templates.tpz"
-          cache: true
+      - name: Download and Install Godot
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip
+          chmod +x Godot_v4.4-stable_linux.x86_64
+          mv Godot_v4.4-stable_linux.x86_64 godot
+          mkdir -p ~/.local/bin
+          mv godot ~/.local/bin/godot
+          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH
+
+      - name: Verify Godot Installation
+        run: godot --version
 
       - name: Run Godot Unit Tests
         run: |
           godot --headless --test
 
   build:
-    name: Build & Export for Validation
+    name: Build and Export Godot Game
     runs-on: ubuntu-latest
     needs: [lint, test]  # Only run if linting and tests pass
 
@@ -49,10 +58,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Godot
-        uses: firebelley/godot-export@v5
-        with:
-          godot-version: "4.4"
+      - name: Download and Install Godot
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip
+          chmod +x Godot_v4.4-stable_linux.x86_64
+          mv Godot_v4.4-stable_linux.x86_64 godot
+          mkdir -p ~/.local/bin
+          mv godot ~/.local/bin/godot
+          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH
+
+      - name: Verify Godot Installation
+        run: godot --version
 
       - name: Export HTML5 Game
         run: |
@@ -69,6 +86,8 @@ jobs:
     name: Deploy Preview to Netlify
     runs-on: ubuntu-latest
     needs: build
+    if: github.event_name == 'pull_request'
+
     steps:
       - name: Download built files
         uses: actions/download-artifact@v4
@@ -84,6 +103,28 @@ jobs:
           PREVIEW_URL=$(netlify deploy --dir=build/web --message "Preview for ${{ github.head_ref }}" --json | jq -r '.deploy_url')
           echo "Preview available at: $PREVIEW_URL"
           echo "Preview available at: $PREVIEW_URL" >> $GITHUB_STEP_SUMMARY
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  deploy:
+    name: Deploy to Netlify
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download built files
+        uses: actions/download-artifact@v4
+        with:
+          name: godot-html5
+          path: build/web
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Production
+        run: netlify deploy --dir=build/web --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

@@ -1,36 +1,43 @@
-name: Deploy to Netlify
+name: Deploy Godot Game to Netlify
 
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
-  deploy:
-    name: Deploy Production Build
+  build:
+    name: Build and Export Godot Game
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Godot
-        uses: firebelley/godot-export@v6.0.0
-        with:
-          godot_executable_download_url: "https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_linux.x86_64.zip"
-          godot_export_templates_download_url: "https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_export_templates.tpz"
-          cache: true
+      # ✅ Manually install Godot 4.4
+      - name: Download and Install Godot
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_linux.x86_64.zip -O godot.zip
+          unzip godot.zip
+          chmod +x Godot_v4.4-stable_linux.x86_64
+          mv Godot_v4.4-stable_linux.x86_64 godot
+          mkdir -p ~/.local/bin
+          mv godot ~/.local/bin/godot
+          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH
 
+      # ✅ Verify installation
+      - name: Verify Godot Installation
+        run: godot --version
+
+      # ✅ Open the project to ensure assets are imported
+      - name: Preload Assets (Ensure All Resources Are Imported)
+        run: godot --headless --editor --quit
+
+      # ✅ Export game as HTML5
       - name: Export HTML5 Game
         run: |
           mkdir -p build/web
-          ~/.local/share/godot/godot --headless --export-release "Web" build/web/index.html
+          godot --headless --export-release "Web" build/web/index.html
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
-      - name: Deploy to Production
-        run: netlify deploy --dir=build/web --prod
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      # ✅ Upload exported game as
