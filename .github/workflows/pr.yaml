@@ -1,9 +1,6 @@
 name: CI/CD for Godot Game
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
 
 jobs:
