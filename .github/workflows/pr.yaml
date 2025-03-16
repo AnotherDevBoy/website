@@ -39,6 +39,10 @@ jobs:
           mv godot ~/.local/bin/godot
           echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH
 
+          wget https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_export_templates.tpz -O export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/4.4.stable/
+          unzip export_templates.tpz -d ~/.local/share/godot/export_templates/4.4.stable/
+
       - name: Verify Godot Installation
         run: godot --version
 
