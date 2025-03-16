@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=4 uid="uid://sub3escv5adi"]
+[gd_scene load_steps=15 format=4 uid="uid://sub3escv5adi"]
 
 [ext_resource type="Texture2D" uid="uid://bp7bny0xqm0ib" path="res://assets/tilesets/interiors/Room_Builder_subfiles_48x48/Room_Builder_Floors_48x48.png" id="1_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://um7sm2ekvd07" path="res://assets/tilesets/interiors/Room_Builder_subfiles_48x48/Room_Builder_3d_walls_48x48.png" id="2_sugp2"]
 [ext_resource type="Texture2D" uid="uid://ccdwo0j2kyfli" path="res://assets/tilesets/office/Modern_Office_48x48.png" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://d54hrol1xp5d" path="res://scenes/player.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://cp7ftgaeipd5c" path="res://scenes/npc.tscn" id="5_tbgi4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jyhfs"]
 texture = ExtResource("1_0wfyh")
@@ -3534,4 +3535,9 @@ collision_visibility_mode = 1
 [node name="Player" parent="." instance=ExtResource("4_jyhfs")]
 position = Vector2(740, 286)
 collision_layer = 16
-collision_mask = 15
+collision_mask = 31
+
+[node name="Npc" parent="." instance=ExtResource("5_tbgi4")]
+position = Vector2(598, 91)
+collision_layer = 8
+collision_mask = 0
