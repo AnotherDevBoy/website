@@ -25,7 +25,7 @@ jobs:
 
       - name: Install Godot Export Templates
         run: |
-          wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
           tar -xf Godot_v${GODOT_VERSION}-stable_export_templates.tpz -C ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
