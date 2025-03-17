@@ -1,0 +1,124 @@
+[gd_scene load_steps=14 format=3 uid="uid://bgihe05d87dv2"]
+
+[ext_resource type="Script" uid="uid://g3bf1uaxkfq3" path="res://scripts/emotion.gd" id="1_j82xg"]
+[ext_resource type="Texture2D" uid="uid://lyj3ngcnucdv" path="res://assets/tilesets/ui/UI_thinking_emotes_animation_48x48.png" id="1_ocyc3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j82xg"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(0, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5fk72"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(48, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_simlr"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(96, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iklpg"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(144, 0, 48, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtums"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(192, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7rxqg"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(240, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yrco1"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(96, 288, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ec4ey"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(144, 288, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocyc3"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(96, 432, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivriy"]
+atlas = ExtResource("1_ocyc3")
+region = Rect2(144, 432, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ivriy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j82xg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fk72")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_simlr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iklpg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtums")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7rxqg")
+}],
+"loop": true,
+"name": &"love",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j82xg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fk72")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_simlr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iklpg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yrco1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ec4ey")
+}],
+"loop": true,
+"name": &"question",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j82xg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fk72")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_simlr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iklpg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ocyc3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ivriy")
+}],
+"loop": true,
+"name": &"talk",
+"speed": 5.0
+}]
+
+[node name="Emotion" type="Node2D"]
+script = ExtResource("1_j82xg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ivriy")
+animation = &"love"
+frame_progress = 0.229979

@@ -9,12 +9,14 @@ var last_direction = Vector2.DOWN
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var raycast: RayCast2D = $RayCast2D
+@onready var emotion = $Emotion
+@onready var interaction_zone = $ActionArea
+
 
 func _ready():
 	target_position = position
 	animation_player.play("idle_down")
 	
-
 func _physics_process(delta: float) -> void:
 	if is_moving:
 		move_towards_target(delta)
@@ -89,3 +91,13 @@ func play_idle_animation():
 	var idle_anim = get_idle_animation()
 	if animation_player.current_animation != idle_anim or not animation_player.is_playing():
 		animation_player.play(idle_anim)
+
+
+func _on_action_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("npc"):
+		emotion.show_emotion("talk")
+
+
+func _on_action_area_body_exited(body: Node2D) -> void:
+	if body.is_in_group("npc"):
+		emotion.hide_emotion()
