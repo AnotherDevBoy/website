@@ -41,7 +41,7 @@ jobs:
 
       # ✅ Open the project to ensure assets are imported
       - name: Preload Assets (Ensure All Resources Are Imported)
-        run: godot --headless --editor --quit
+        run: godot --headless --quit
 
       # ✅ Export game as HTML5
       - name: Export HTML5 Game
