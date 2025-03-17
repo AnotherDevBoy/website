@@ -6,47 +6,34 @@ on:
       - main
   pull_request:
 
-jobs:
-  build:
-    name: Build and Export Godot Game
-    runs-on: ubuntu-latest
+env:
+  GODOT_VERSION: 4.4
+  EXPORT_NAME: website
+  PROJECT_PATH: "."
 
+jobs:
+  export-web:
+    name: Web Export
+    runs-on: ubuntu-22.04
+    container:
+      image: barichello/godot-ci:4.3
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
-
-      # ✅ Manually install Godot 4.4
-      - name: Download and Install Godot
+      - name: Setup
         run: |
-          wget https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_linux.x86_64.zip -O godot.zip
-          unzip godot.zip
-          chmod +x Godot_v4.4-stable_linux.x86_64
-          mv Godot_v4.4-stable_linux.x86_64 godot
-          mkdir -p ~/.local/bin
-          mv godot ~/.local/bin/godot
-          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH
-
-          wget https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_export_templates.tpz -O export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/4.4.stable/
-          unzip export_templates.tpz -d ~/.local/share/godot/export_templates/4.4.stable/
-
-      # ✅ Verify installation
-      - name: Verify Godot Installation
-        run: godot --version
-
-      - name: Verify Export Templates
-        run: ls -lah ~/.local/share/godot/export_templates/4.4.stable/
-
-      # ✅ Open the project to ensure assets are imported
-      - name: Preload Assets (Ensure All Resources Are Imported)
-        run: godot --headless --quit --path .
-
-      # ✅ Export game as HTML5
-      - name: Export HTML5 Game
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Web Build
         run: |
-          mkdir -p build/web
-          godot --headless --export-release "Web" build/web/index.html
-
-      # ✅ Upload exported game as
+          mkdir -v -p build/web
+          EXPORT_DIR="$(readlink -f build)"
+          cd $PROJECT_PATH
+          godot --headless --verbose --export-release "Web" "$EXPORT_DIR/web/index.html"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: build/web
